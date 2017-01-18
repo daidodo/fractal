@@ -1,7 +1,7 @@
 # Fractal
 Generates images depicting [Fractal](https://en.wikipedia.org/wiki/Fractal) mathematics.
 
-# Samples
+## Samples
 ![image](https://github.com/daidodo/fractal/blob/master/samples/1.jpg)
 
 [Mandelbrot set](https://en.wikipedia.org/wiki/Mandelbrot_set)
