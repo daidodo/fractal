@@ -65,9 +65,9 @@ static DWORD BurningShip(__Double x, __Double y)
 
 static DWORD calc(__Double x, __Double y)
 {
-    return MandelbrotSet(x, y);
+    //return MandelbrotSet(x, y);
     //return JuliaSet(x, y);
-    //return BurningShip(x, y);
+    return BurningShip(x, y);
 }
 
 FractalImage::FractalImage(const CRect & rect) {
@@ -139,6 +139,16 @@ __Double FractalImage::delta() const
     return (r < 0 ? 0 : r);
 }
 
+void FractalImage::SaveToFile(LPCTSTR fname) const
+{
+    CBitmap tb;
+    tb.CreateBitmap(bmpInfo.bmWidth, bmpInfo.bmHeight, 1, 32, 0);
+    tb.SetBitmapBits(bmpInfo.bmWidth * bmpInfo.bmHeight * sizeof(DWORD), &adwBits[0]);
+    CImage image;
+    image.Attach(tb.operator HBITMAP());
+    image.Save(fname);
+}
+
 // CFractalView
 
 IMPLEMENT_DYNCREATE(CFractalView, CView)
@@ -152,6 +162,7 @@ BEGIN_MESSAGE_MAP(CFractalView, CView)
     ON_WM_LBUTTONDOWN()
     ON_WM_LBUTTONUP()
     ON_WM_MOUSEMOVE()
+    ON_COMMAND(ID_FILE_SAVE, &CFractalView::OnFileSave)
 END_MESSAGE_MAP()
 
 // CFractalView 构造/析构
@@ -169,8 +180,8 @@ CFractalView::~CFractalView()
 void CFractalView::initFractal(const CRect & rect)
 {
     fractal_.reset(new FractalImage(rect));
-    fractal_->setRangeX(-50, 50);
-    fractal_->setRangeY(-50, 50);
+    fractal_->setRangeX(-20, 20);
+    fractal_->setRangeY(-20, 20);
     fractal_->Update();
 }
 
@@ -287,4 +298,25 @@ void CFractalView::OnMouseMove(UINT nFlags, CPoint point)
     }
 
     CView::OnMouseMove(nFlags, point);
+}
+
+
+void CFractalView::OnFileSave()
+{
+    // TODO: 在此添加命令处理程序代码
+    if (!fractal_)
+        return;
+    BOOL isOpen = FALSE;        //是否打开(否则为保存)  
+    CString defaultDir = L"C:\\";   //默认打开的文件路径  
+    CString fileName = L"fractal.bmp";         //默认打开的文件名  
+    CString filter = L"文件 (*.bmp)||";   //文件过虑的类型  
+    CFileDialog openFileDlg(isOpen, defaultDir, fileName, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, filter, NULL);
+    openFileDlg.GetOFN().lpstrInitialDir = L"E:\\fractal.bmp";
+    INT_PTR result = openFileDlg.DoModal();
+    CString filePath = defaultDir + "\\" + fileName;
+    if (result != IDOK)
+        return;
+    filePath = openFileDlg.GetPathName();
+    fractal_->SaveToFile(filePath);
+
 }

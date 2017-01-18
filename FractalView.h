@@ -22,6 +22,7 @@ public:
     void Draw(CDC * pDC);
     void Update();
     void Update(CPoint start, CPoint end);
+    void SaveToFile(LPCTSTR fname) const;
 private:
     DWORD & bit(int x, int y) {
         return adwBits[x + y * bmpInfo.bmWidth];
@@ -76,6 +77,7 @@ public:
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
     afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+    afx_msg void OnFileSave();
 };
 
 #ifndef _DEBUG  // FractalView.cpp 中的调试版本
