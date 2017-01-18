@@ -186,9 +186,6 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Fractal.h" />
     <ClInclude Include="FractalDoc.h" />
     <ClInclude Include="FractalView.h" />
@@ -213,6 +210,7 @@
     <ResourceCompile Include="Fractal.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="README.md" />
     <None Include="res\cursor1.cur" />
     <None Include="res\Fractal.rc2" />
   </ItemGroup>
